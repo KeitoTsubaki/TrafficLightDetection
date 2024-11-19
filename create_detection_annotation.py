@@ -15,6 +15,8 @@ MODEL_PATH = "./models/model_dataset2_b8_e200_lr0.005.pth"
 IMG_SIZE = (1080, 1920)
 DEVICE = torch.device("cuda") if torch.cuda.is_available else torch.device("cpu")
 
+SCORE_THRESHOLD = 0
+
 torch.cuda.empty_cache()
 
 model = torch.jit.load(MODEL_PATH, map_location="cpu")
@@ -55,7 +57,8 @@ for i in range(test_dataset.__len__()):
             y = box[1]
             x2 = box[2]
             y2 = box[3]
-            f.write(f"{class_id} {score} {x} {y} {x2} {y2}\n")
+            if score > SCORE_THRESHOLD:
+                f.write(f"{class_id} {score} {x} {y} {x2} {y2}\n")
 
     f.close()
 
