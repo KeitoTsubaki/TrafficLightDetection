@@ -28,7 +28,7 @@ https://youtu.be/RZgY4dEtYw8
     <img src="./output_images/test_analysis.png" width=400>
 
 ## 学習結果
-epoch: 12でearly stoppingしました。
+epoch: 16でearly stoppingしました。
 
 <img src="./models/learning_plot_dataset2_b8_e200_lr0.005.png" width=300>
 
