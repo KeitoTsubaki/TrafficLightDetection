@@ -1,0 +1,63 @@
+"""
+review_object_detection_metrics ツールを使用するために、検出アノテーションファイルを作成する。
+各画像に対してオブジェクト情報が書かれたテキストファイルを作成する。
+フォーマット: クラスID 信頼度 x y x2 y2
+"""
+
+import torch
+from torchvision import transforms
+
+from train.TrafficLightDataset import TrafficLightDataset
+
+TEST_ANNOTATION_PATH = "./dataset2/test/annotations.xml"
+TEST_IMG_DIR_PATH = "./dataset2/test/images/"
+MODEL_PATH = "./models/model_dataset2_b8_e200_lr0.005.pth"
+IMG_SIZE = (1080, 1920)
+DEVICE = torch.device("cuda") if torch.cuda.is_available else torch.device("cpu")
+
+torch.cuda.empty_cache()
+
+model = torch.jit.load(MODEL_PATH, map_location="cpu")
+model.to(DEVICE)
+
+resize = transforms.Resize(IMG_SIZE)
+to_tensor = transforms.ToTensor()
+test_transform = transforms.Compose([resize, to_tensor])
+test_dataset = TrafficLightDataset(
+    annotation_path=TEST_ANNOTATION_PATH,
+    img_dir_path=TEST_IMG_DIR_PATH,
+    img_size=IMG_SIZE,
+    transforms=test_transform,
+)
+
+img_path_all = test_dataset.img_path_all
+
+model.eval()
+for i in range(test_dataset.__len__()):
+    img, target = test_dataset.__getitem__(i)
+    imgs = []
+    imgs.append(img.to(DEVICE))
+    img_name = img_path_all[i].split("/")[-1].split(".")[0]
+    print(img_name)
+
+    with torch.no_grad():
+        predictions = model(imgs)[1]
+        print(predictions)
+
+    f = open(f"./dets_annotation/{img_name}.txt", mode="a")
+
+    for i, prediction in enumerate(predictions):
+        for j, box in enumerate(prediction["boxes"]):
+            box = box.tolist()
+            class_id = prediction["labels"].tolist()[j]
+            score = prediction["scores"].tolist()[j]
+            x = box[0]
+            y = box[1]
+            x2 = box[2]
+            y2 = box[3]
+            f.write(f"{class_id} {score} {x} {y} {x2} {y2}\n")
+
+    f.close()
+
+# GPUキャッシュをクリア
+torch.cuda.empty_cache()
