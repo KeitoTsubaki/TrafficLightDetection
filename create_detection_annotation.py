@@ -49,16 +49,28 @@ for i in range(test_dataset.__len__()):
     f = open(f"./dets_annotation/{img_name}.txt", mode="a")
 
     for i, prediction in enumerate(predictions):
+        len_box = len(prediction["boxes"])
         for j, box in enumerate(prediction["boxes"]):
             box = box.tolist()
             class_id = prediction["labels"].tolist()[j]
             score = prediction["scores"].tolist()[j]
-            x = box[0]
-            y = box[1]
-            x2 = box[2]
-            y2 = box[3]
+            x = int(box[0])
+            y = int(box[1])
+            x2 = int(box[2])
+            y2 = int(box[3])
             if score > SCORE_THRESHOLD:
-                f.write(f"{class_id} {score} {x} {y} {x2} {y2}\n")
+                # f.write(f"{class_id} {score:.2f} {x:.2f} {y:.2f} {x2:.2f} {y2:.2f}")
+                f.write(f"{class_id} {score:.2f} {x} {y} {x2} {y2}")
+                if j < len_box - 1:
+                    f.write("\n")
+            # w = box[2] - box[0]
+            # h = box[3] - box[1]
+            # x_c = box[0] + w / 2
+            # y_c = box[1] + h / 2
+            # if score > SCORE_THRESHOLD:
+            #     f.write(f"{class_id} {score:.2f} {x_c:.2f} {y_c:.2f} {w:.2f} {h:.2f}")
+            #     if j < len_box - 1:
+            #         f.write("\n")
 
     f.close()
 
