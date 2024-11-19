@@ -15,7 +15,7 @@ MODEL_PATH = "./models/model_dataset2_b8_e200_lr0.005.pth"
 IMG_SIZE = (1080, 1920)
 DEVICE = torch.device("cuda") if torch.cuda.is_available else torch.device("cpu")
 
-SCORE_THRESHOLD = 0
+SCORE_THRESHOLD = 0.7
 
 torch.cuda.empty_cache()
 
@@ -46,7 +46,7 @@ for i in range(test_dataset.__len__()):
         predictions = model(imgs)[1]
         print(predictions)
 
-    f = open(f"./dets_annotation/{img_name}.txt", mode="a")
+    f = open(f"./dets_annotation0.7/{img_name}.txt", mode="a")
 
     for i, prediction in enumerate(predictions):
         len_box = len(prediction["boxes"])
