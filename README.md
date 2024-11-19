@@ -38,14 +38,14 @@ epoch: 16でearly stoppingしました。
 モデルの評価には以下のツールを使用しました。
 https://github.com/rafaelpadilla/review_object_detection_metrics/tree/main
 
-- **AP,mAPの結果です。**（IOUの閾値を0.5に設定）<br>
+- **AP,mAPの結果**（IOUの閾値を0.5に設定）<br>
 緑、黄、赤はかなり精度が高いです。矢印は他に比べると劣りますが、低くはないと思います。
 
     <img src="./output_images/AP_mAP/all_classes.png" width=300>
 
 <br>
 
-- **信頼度の閾値を0.7に設定した際のAP,mAPの結果です。**（IOUの閾値を0.5に設定）<br>
+- **信頼度の閾値を0.7に設定した際のAP,mAPの結果**（IOUの閾値を0.5に設定）<br>
 動画では閾値を0.7に設定しているので、これが実際の性能です。
 
     <img src="./output_images/AP_mAP_0.75/all_classes.png" width=300>
