@@ -39,7 +39,7 @@ epoch: 16でearly stoppingしました。
 https://github.com/rafaelpadilla/review_object_detection_metrics/tree/main
 
 - **AP,mAPの結果です。**（IOUの閾値を0.5に設定）<br>
-緑、黄、赤は良く検出できています。矢印は他に比べると劣りますが、低くはないと思います。
+緑、黄、赤はかなり精度が高いです。矢印は他に比べると劣りますが、低くはないと思います。
 
     <img src="./output_images/AP_mAP/all_classes.png" width=300>
 
